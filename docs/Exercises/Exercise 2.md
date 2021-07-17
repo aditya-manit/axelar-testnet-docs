@@ -167,6 +167,6 @@ An automated service processes all pending transfers from the Axelar network to 
 If your local axelar node fails, meaning `c2d2cli` cannot connect to it to broadcast transactions, you may use an Axelar public node to broadcast transactions by adding the config file flag `--conf /config.testnet.toml` like so:
 
 ```bash
-   c2d2cli transfer satoshi [bitcoin recipient address] --source-chain ethereum --dest-chain bitcoin --conf /config.testnet.toml --gas=auto --gas-adjustment=1.4
+c2d2cli transfer satoshi [bitcoin recipient address] --source-chain ethereum --dest-chain bitcoin --conf /config.testnet.toml --gas=auto --gas-adjustment=1.4
 ```
 :::
