@@ -144,9 +144,9 @@ html[data-theme="light"] p code {
   color: #89a8aa;
   font-family: var(--ifm-font-family-monospace);
 }
-
+/*change font size*/
 .markdown {
-  font-size: 1.4em;
+  font-size: 1.1em;
 }
 
 .pagination-nav__link {
