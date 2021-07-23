@@ -156,17 +156,16 @@ Balance will appear only after you are fully synced with the network
 ## Stop and restart testnet
 To leave the Axelar node CLI, type `exit`.
 To stop the node from syncing, press Control C, then 
+	To stop the node, open a new CLI terminal and run	
 ```bash
-docker stop $(docker ps -a -q)
+docker stop $(docker ps -a -q)	
+```	
+```bash
+docker rm $(docker ps -a -q)	
 ```
 
-To restart the node, use two terminals to run
-```bash
-docker start axelar-core -a
-```
-```bash
-docker start tofnd -a
-```
+To restart the node, run the `join/joinTestnet.sh` script again, with the same `--axelar-core`, `--tofnd` (and optionally `--root`) parameters as before. Do NOT use the `--reset-chain` flag or your node will have to sync again from the beginning.
+	
 To enter Axelar node CLI again
 ```bash
 docker exec -it axelar-core sh

@@ -22,8 +22,8 @@ Axelar Network is a work in progress. At no point in time should you transfer an
 ## Useful links
 - [Axelar faucet](http://faucet.testnet.axelar.network/)
 - Latest docker images:
-  - https://hub.docker.com/repository/docker/axelarnet/axelar-core,
-  - https://hub.docker.com/repository/docker/axelarnet/tofnd
+- https://hub.docker.com/repository/docker/axelarnet/axelar-core,
+- https://hub.docker.com/repository/docker/axelarnet/tofnd
 - [Extra commands to query Axelar Network state](/useful-commands)
 
 ## What you need
@@ -46,22 +46,22 @@ To perform these tests, you'll need some test Bitcoins on the Bitcoin testnet, a
 1. Create a deposit address on Bitcoin (to which you'll deposit coins later)
 
 ```bash
-  axelard tx bitcoin link ethereum {ethereum Ropsten dst addr} --from validator -y -b block
+axelard tx bitcoin link ethereum {ethereum Ropsten dst addr} --from validator -y -b block
 -> returns deposit address
 ```
 
-  e.g.,
+e.g.,
 
-  ```bash
-  axelard tx bitcoin link ethereum 0xc1c0c8D2131cC866834C6382096EaDFEf1af2F52 --from validator -y -b block
-  ```
+```bash
+axelard tx bitcoin link ethereum 0xc1c0c8D2131cC866834C6382096EaDFEf1af2F52 --from validator -y -b block
+```
 
-  Look for `successfully linked {bitcoin deposit address} and {ethereum Ropsten dst addr}`
+Look for `successfully linked {bitcoin deposit address} and {ethereum Ropsten dst addr}`
 
 2. External: send a TEST BTC on Bitcoin testnet to the deposit address specific above, and wait for 6 confirmations (i.e. the transaction is 6 blocks deep in the Bitcoin chain).
-  - ALERT: DO NOT SEND ANY REAL ASSETS
-  - You can use a bitcoin faucet such as https://bitcoinfaucet.uo1.net/ to send TEST BTC to the deposit address
-  - You can monitor the status of your deposit using the testnet explorer: https://blockstream.info/testnet/
+- ALERT: DO NOT SEND ANY REAL ASSETS
+- You can use a bitcoin faucet such as https://bitcoinfaucet.uo1.net/ to send TEST BTC to the deposit address
+- You can monitor the status of your deposit using the testnet explorer: https://blockstream.info/testnet/
 
 
 3. Confirm the Bitcoin outpoint
@@ -70,14 +70,14 @@ To perform these tests, you'll need some test Bitcoins on the Bitcoin testnet, a
 axelard tx bitcoin confirmTxOut "{txID:vout}" "{amount}btc" "{deposit address}" --from validator -y -b block
 ```
 
-  e.g.,
+e.g.,
 
 ```bash
 axelard tx bitcoin confirmTxOut 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10068d39b4f4f9b6082d:0 0.00088btc tb1qlteveekr7u2qf8faa22gkde37epngsx9d7vgk98ujtzw77c27k7qk2qvup --from validator -y -b block
 ```
 
-  Wait for transaction to be confirmed (~10 Axelar blocks, ~50 secs).
-  Eventually, you'll see something like this in the node terminal:
+Wait for transaction to be confirmed (~10 Axelar blocks, ~50 secs).
+Eventually, you'll see something like this in the node terminal:
 
 ```bash
 bitcoin outpoint confirmation result is
@@ -88,30 +88,30 @@ You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e outpoint`.
 4. Trigger signing of the transfers to Ethereum
 
 ```bash
-  axelard tx evm sign-pending-transfers ethereum --from validator -y -b block
-  -> returns commandID of signed tx
-  -> wait for sign protocol to complete (~10 blocks)
+axelard tx evm sign-pending-transfers ethereum --from validator -y -b block
+-> returns commandID of signed tx
+-> wait for sign protocol to complete (~10 blocks)
 ```
 
-  Look for commandID and its value in the output: 
+Look for commandID and its value in the output: 
 ```json
 "key": "commandID",
 "value": "d5e993e407ff399cf2770a1d42bc2baf5308f46632fcbe209318acb09776599f"
 ```
 
-  You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e command`.
+You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e command`.
 
 5. Get the command data that needs to be sent in an Ethereum transaction in order to execute the mint
 ```bash
 axelard q evm command ethereum {commandID}
 ```
-  
-  e.g.,
+
+e.g.,
 
 ```bash
 axelard q evm command ethereum 28a523a4d5836df2cdc3af5beffc10ca946e62497d609521504462e043a38fdc
-  ```
-  The command data will be displayed as output.
+```
+The command data will be displayed as output.
 
 6. Send the Ethereum transaction wrapping the command data to execute the mint
 
@@ -132,20 +132,20 @@ To send wrapped Bitcoin back to Bitcoin, run the following commands:
 1. Create a deposit address on Ethereum
 
 ```bash
-  axelard tx evm link ethereum bitcoin {destination bitcoin addr} satoshi --from validator -y -b block
-  -> returns deposit address
-  ```
+axelard tx evm link ethereum bitcoin {destination bitcoin addr} satoshi --from validator -y -b block
+-> returns deposit address
+```
 
-  e.g.,
+e.g.,
 ```bash
-  axelard tx evm link ethereum bitcoin tb1qg2z5jatp22zg7wyhpthhgwvn0un05mdwmqgjln satoshi --from validator -y -b block
-  ```
+axelard tx evm link ethereum bitcoin tb1qg2z5jatp22zg7wyhpthhgwvn0un05mdwmqgjln satoshi --from validator -y -b block
+```
 
-  Look for the Ethereum deposit address as the first output in this line (`0x5CFE...`):
+Look for the Ethereum deposit address as the first output in this line (`0x5CFE...`):
 
 ```bash
-  "successfully linked {0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E} and {tb1qq8wnre6rzctec9wycrl2dq00m3avravslahc8v}"
-  ```
+"successfully linked {0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E} and {tb1qq8wnre6rzctec9wycrl2dq00m3avravslahc8v}"
+```
 :::note
 Make sure to link a Bitcoin address that is controlled by you, e.g. if you link it to an address controlled by Axelar your withdrawal will be considered a donation and added to the pool of funds
 :::
@@ -155,17 +155,22 @@ Make sure to link a Bitcoin address that is controlled by you, e.g. if you link 
 3. Confirm the Ethereum transaction
 
 ```bash
-  axelard tx evm confirm-erc20-deposit ethereum {txID} {amount} {deposit addr} --from validator -y -b block
-  -> wait for transaction to be confirmed (~10 Axelar blocks)
-  ```
+axelard tx evm confirm-erc20-deposit ethereum {txID} {amount} {deposit addr} --from validator -y -b block
+```
 
-  Here, amount should be specific in Satoshi. (For instance, 0.0001BTC = 10000)
-  e.g.,
+Here, amount should be specific in Satoshi. (For instance, 0.0001BTC = 10000)
+e.g.,
 
 ```bash
-  axelard tx evm confirm-erc20-deposit ethereum 0x01b00d7ed8f66d558e749daf377ca30ed45f747bbf64f2fd268a6d1ea84f916a 10000 0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E --from validator -y -b block
-  -> wait for transaction to be confirmed (~10 Axelar blocks)
-  ```
+axelard tx evm confirm-erc20-deposit ethereum 0x01b00d7ed8f66d558e749daf377ca30ed45f747bbf64f2fd268a6d1ea84f916a 10000 0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E --from validator -y -b block
+```
+Wait for transaction to be confirmed.	
+Eventually, you'll see something like this in the node terminal:
+```bash
+Ethereum deposit confirmation result is {result}
+```
+
+You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e "deposit confirmation"`.
 
 You're done! In the next step, a withdrawal must be signed and submitted to the Bitcoin network. 
 
